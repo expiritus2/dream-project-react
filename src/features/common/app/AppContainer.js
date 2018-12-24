@@ -1,16 +1,14 @@
 import React from "react";
-// import {useRedux} from 'hooks';
+import { useRedux } from "hooks";
 import App from "./App";
 
-const AppContainer = () => (
-  // const [app] = useRedux("app");
+const AppContainer = () => {
+  const [app] = useRedux("app");
 
   // eslint-disable-next-line
-  // console.log("state", app);
+  console.log("state", app);
 
-  // return (
-  <App />
-  // )
-);
+  return <App />;
+};
 
 export default AppContainer;
