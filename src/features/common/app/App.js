@@ -1,5 +1,12 @@
 import React from "react";
+import { bool } from "prop-types";
 
-const App = () => <div>Hello world from App</div>;
+const App = ({ isLoggedIn }) => (
+  <div className="page-wrapper">{isLoggedIn ? "Hello" : "Goodby"}</div>
+);
 
 export default App;
+
+App.propTypes = {
+  isLoggedIn: bool.isRequired,
+};

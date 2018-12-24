@@ -1,14 +1,14 @@
 import React from "react";
 import { useRedux } from "hooks";
+import { authenticate } from "./modules/actions";
 import App from "./App";
 
 const AppContainer = () => {
-  const [app] = useRedux("app");
+  const [app] = useRedux("app", {
+    authenticate: authenticate.trigger,
+  });
 
-  // eslint-disable-next-line
-  console.log("state", app);
-
-  return <App />;
+  return <App isLoggedIn={app.isLoggedIn} />;
 };
 
 export default AppContainer;
