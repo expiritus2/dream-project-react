@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useRedux } from "hooks";
 import { authenticate } from "./modules/actions";
 import App from "./App";
 
 const AppContainer = () => {
-  const [app] = useRedux("app", {
+  const [app, actions] = useRedux("app", {
     authenticate: authenticate.trigger,
   });
+
+  useEffect(() => {
+    actions.authenticate();
+  }, []);
 
   return <App isLoggedIn={app.isLoggedIn} />;
 };

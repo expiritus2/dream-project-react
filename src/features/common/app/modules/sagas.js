@@ -24,7 +24,7 @@ export function* logoutSaga({ payload: { history } }) {
     } else {
       localStorage.removeItem("token");
       yield put(logout.success());
-      yield call(history.pub, "/");
+      yield call(history.push, "/");
       yield call(window.scrollTo, 0, 0);
     }
   } catch (error) {
