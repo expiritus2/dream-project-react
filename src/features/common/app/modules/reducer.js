@@ -1,13 +1,10 @@
 import { handleActions } from "redux-actions";
-import decodeJwt from "jwt-decode";
 import { authenticate, logout } from "./actions";
 
 const initialState = {
   isLoading: false,
   isLoggedIn: false,
-  token: localStorage.getItem("token")
-    ? decodeJwt(localStorage.getItem("token"))
-    : { user: { type: "" } },
+  token: localStorage.getItem("token") ? localStorage.getItem("token") : "",
 };
 
 const app = handleActions(

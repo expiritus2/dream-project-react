@@ -1,12 +1,11 @@
 import { takeEvery, put, call } from "redux-saga/effects";
-import decodeJwt from "jwt-decode";
 
 import { authenticate, logout } from "./actions";
 
 export function* authenticateSaga() {
   try {
     if (localStorage.getItem("token")) {
-      const token = decodeJwt(localStorage.getItem("token"));
+      const token = localStorage.getItem("token");
 
       yield put(authenticate.success(token));
     } else {

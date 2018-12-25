@@ -1,47 +1,47 @@
-{
-  "plugins": ["react-hooks"],
-  "extends": ["react-app", "airbnb", "prettier"],
-  // Makes possible to absolute import from root src directories.
-  "settings": { "import/resolver": { "node": { "moduleDirectory": ["node_modules", "src"] } } },
-  // Override some rules.
-  "rules": {
-    // Disable linebreak linter because we work on all envirenments
-    // and it's hard to control for now.
-    "linebreak-style": "off",
-    // Keep line between class members except of simple class properties
-    // e.g. class variables or component state.
-    "lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
-    // There is no differencies except of `allowTernary` select-option.
-    // We prefer to use `if shorthands` for logic operations.
-    // @example condition ? method1() : method2()
-    "no-unused-expressions": ["error", { "allowTernary": true }],
-    // Disallows providing the 10 radix by default.
-    "radix": ["error", "as-needed"],
-    // Disable because of `prettier` incapability.
-    // May be in future `eslint-config-prettier` releases it will be fixed.
-    "react/jsx-wrap-multilines": "off",
-    // Disable this rule because it causes an error with special html chars
-    // on some envirenments (e.g. Windows).
-    "react/jsx-one-expression-per-line": "off",
-    // Use descructing only in render for `props` and `state`.
-    // For handlers we use destruction only if needed.
-    "react/destructuring-assignment": "off",
-    // Lint thinks that we should split our containers with `.js`
-    // and components with `.jsx` because of react markup.
-    // But in our opinion there is no need to use .jsx extension.
-    "react/jsx-filename-extension": ["error", { "extensions": [".js", ".jsx"] }],
-    // There is no need to use alternatives everyvere like `shape`.
-    // Sometimies we just need to know that this is an array in container for example.
-    // We does not do any manipulations with array props and just pass it into the component.
-    "react/forbid-prop-types": "off",
-    // We must disable this rule because we have a lot of innerHTML from server.
-    // e.g. StudentAssignment, Element, PartType and so on.
-    "react/no-danger": "off",
-    // Disable this rule because there are a lot of cases when for now
-    // we have for example `actions` or `selectors` for redux with one import
-    // but in future in can be changed.
-    "import/prefer-default-export": "off",
-    "react-hooks/rules-of-hooks": "error",
-    "no-use-before-define": ["error", { "variables": false }]
-  }
-}
+//{
+//  "plugins": ["react-hooks"],
+//  "extends": ["react-app", "airbnb", "prettier"],
+//  // Makes possible to absolute import from root src directories.
+//  "settings": { "import/resolver": { "node": { "moduleDirectory": ["node_modules", "src"] } } },
+//  // Override some rules.
+//  "rules": {
+//    // Disable linebreak linter because we work on all envirenments
+//    // and it's hard to control for now.
+//    "linebreak-style": "off",
+//    // Keep line between class members except of simple class properties
+//    // e.g. class variables or component state.
+//    "lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
+//    // There is no differencies except of `allowTernary` select-option.
+//    // We prefer to use `if shorthands` for logic operations.
+//    // @example condition ? method1() : method2()
+//    "no-unused-expressions": ["error", { "allowTernary": true }],
+//    // Disallows providing the 10 radix by default.
+//    "radix": ["error", "as-needed"],
+//    // Disable because of `prettier` incapability.
+//    // May be in future `eslint-config-prettier` releases it will be fixed.
+//    "react/jsx-wrap-multilines": "off",
+//    // Disable this rule because it causes an error with special html chars
+//    // on some envirenments (e.g. Windows).
+//    "react/jsx-one-expression-per-line": "off",
+//    // Use descructing only in render for `props` and `state`.
+//    // For handlers we use destruction only if needed.
+//    "react/destructuring-assignment": "off",
+//    // Lint thinks that we should split our containers with `.js`
+//    // and components with `.jsx` because of react markup.
+//    // But in our opinion there is no need to use .jsx extension.
+//    "react/jsx-filename-extension": ["error", { "extensions": [".js", ".jsx"] }],
+//    // There is no need to use alternatives everyvere like `shape`.
+//    // Sometimies we just need to know that this is an array in container for example.
+//    // We does not do any manipulations with array props and just pass it into the component.
+//    "react/forbid-prop-types": "off",
+//    // We must disable this rule because we have a lot of innerHTML from server.
+//    // e.g. StudentAssignment, Element, PartType and so on.
+//    "react/no-danger": "off",
+//    // Disable this rule because there are a lot of cases when for now
+//    // we have for example `actions` or `selectors` for redux with one import
+//    // but in future in can be changed.
+//    "import/prefer-default-export": "off",
+//    "react-hooks/rules-of-hooks": "error",
+//    "no-use-before-define": ["error", { "variables": false }]
+//  }
+//}
