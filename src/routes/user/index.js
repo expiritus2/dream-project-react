@@ -1,3 +1,8 @@
 import { loadable } from "utils";
+import commonRoutes from "../common";
 
-export default [{}];
+export default [
+  {
+    ...commonRoutes,
+  },
+];
