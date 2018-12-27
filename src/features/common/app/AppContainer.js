@@ -6,9 +6,12 @@ import App from "./App";
 const AppContainer = () => {
   const [app, actions] = useRedux("app", { authenticate });
 
-  useEffect(() => {
-    actions.authenticate();
-  }, []);
+  useEffect(
+    () => {
+      actions.authenticate();
+    },
+    [app],
+  );
 
   return <App isLoggedIn={app.isLoggedIn} />;
 };

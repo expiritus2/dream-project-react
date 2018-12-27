@@ -1,10 +1,11 @@
 import React from "react";
-import Logo from "./components/logo";
+import { Logo, Navigation } from "./components";
 // import { bool } from "prop-types";
 
-const Header = () => (
+const Header = ({ isLoggedIn }) => (
   <header className="main-header">
     <Logo />
+    <Navigation isLoggedIn={isLoggedIn} />
   </header>
 );
 
