@@ -1,5 +1,9 @@
 import { handleActions } from "redux-actions";
-import { authenticate, logout } from "./actions";
+import {
+  authenticateSuccess,
+  authenticateFailure,
+  logoutSuccess,
+} from "./actions";
 
 const initialState = {
   isLoading: false,
@@ -9,19 +13,19 @@ const initialState = {
 
 const app = handleActions(
   {
-    [authenticate.SUCCESS]: (state, action) => ({
+    [authenticateSuccess]: (state, action) => ({
       ...state,
       token: action.payload,
       isLoggedIn: true,
       isLoading: false,
     }),
-    [authenticate.FAILURE]: state => ({
+    [authenticateFailure]: state => ({
       ...state,
       token: initialState.token,
       isLoggedIn: false,
       isLoading: false,
     }),
-    [logout.SUCCESS]: state => ({
+    [logoutSuccess]: state => ({
       ...state,
       token: initialState.token,
       isLoggedIn: false,

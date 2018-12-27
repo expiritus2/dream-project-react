@@ -8756,7 +8756,7 @@ reduce-reducers@^0.4.3:
   resolved "https://registry.yarnpkg.com/reduce-reducers/-/reduce-reducers-0.4.3.tgz#8e052618801cd8fc2714b4915adaa8937eb6d66c"
   integrity sha512-+CNMnI8QhgVMtAt54uQs3kUxC3Sybpa7Y63HR14uGLgI9/QR5ggHvpxwhGGe3wmx5V91YwqQIblN9k5lspAmGw==
 
-redux-actions@^2.3.2, redux-actions@^2.6.4:
+redux-actions@^2.6.4:
   version "2.6.4"
   resolved "https://registry.yarnpkg.com/redux-actions/-/redux-actions-2.6.4.tgz#e1d9d7d987d274071b0134b707365d3e25ba3b26"
   integrity sha512-Gho+gnsvyR5h0pApoMdHLYssVEu4I0DNqyC91u43Xy/BvLrEddEMtukLF8oL3WXUy7DjxqKOKZHKmpKyN6hxlQ==
@@ -8771,13 +8771,6 @@ redux-devtools-extension@^2.13.7:
   version "2.13.7"
   resolved "https://registry.yarnpkg.com/redux-devtools-extension/-/redux-devtools-extension-2.13.7.tgz#14bd7a1a7c8bee7f397beb1116fd16fc9633b752"
   integrity sha512-F2GlWMWxCTJGRjJ+GSZcGDcVAj6Pbf77FKb4C9S8eni5Eah6UBGNwxNj8K1MTtmItdZH1Wx+EvIifHN2KKcQrw==
-
-redux-saga-routines@^3.1.3:
-  version "3.1.3"
-  resolved "https://registry.yarnpkg.com/redux-saga-routines/-/redux-saga-routines-3.1.3.tgz#bf600c8c2a6e9708c3bbd4d6577be14bde3b5551"
-  integrity sha512-AMcCCgLez66H7+mLO6ajSnDk+gAnpYDO/VpRcfIJLLbkR7SBsw0axIxoiTO6BAYqqj4758pqSY7/MmN7DhwBHw==
-  dependencies:
-    redux-actions "^2.3.2"
 
 redux-saga@^0.16.2:
   version "0.16.2"

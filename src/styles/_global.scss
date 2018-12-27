@@ -1,1 +1,30 @@
-@import "variables";
+@import "global";
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  color: $main-dark-color;
+  font-family: $main-font;
+  background-color: $white-color;
+  height: 100%;
+}
+
+html {
+  font-size: $global-font-size;
+  overflow-x: hidden;
+}
+
+body {
+  font-size: $global-font-size;
+  line-height: 1.4;
+}

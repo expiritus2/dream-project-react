@@ -1,5 +1,5 @@
 import React from "react";
-import { Logo } from "components";
+import Logo from "./components/logo";
 // import { bool } from "prop-types";
 
 const Header = () => (

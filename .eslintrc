@@ -1,6 +1,6 @@
 {
   "plugins": ["react-hooks"],
-  "extends": ["react-app", "airbnb", "prettier"],
+  "extends": ["react-app", /*"airbnb",*/ "prettier"],
   // Makes possible to absolute import from root src directories.
   "settings": { "import/resolver": { "node": { "moduleDirectory": ["node_modules", "src"] } } },
   // Override some rules.

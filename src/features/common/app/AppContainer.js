@@ -4,9 +4,7 @@ import { authenticate } from "./modules/actions";
 import App from "./App";
 
 const AppContainer = () => {
-  const [app, actions] = useRedux("app", {
-    authenticate: authenticate.trigger,
-  });
+  const [app, actions] = useRedux("app", { authenticate });
 
   useEffect(() => {
     actions.authenticate();

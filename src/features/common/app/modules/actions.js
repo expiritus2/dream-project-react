@@ -1,4 +1,9 @@
-import { createRoutine } from "redux-saga-routines";
+import { createAction } from "redux-actions";
 
-export const authenticate = createRoutine("APP/AUTH");
-export const logout = createRoutine("APP/LOGOUT");
+export const authenticate = createAction("APP/AUTH");
+export const authenticateSuccess = createAction("APP/AUTH/SUCCESS");
+export const authenticateFailure = createAction("APP/AUTH/FAILURE");
+
+export const logout = createAction("APP/LOGOUT");
+export const logoutSuccess = createAction("APP/LOGOUT/SUCCESS");
+export const logoutFailure = createAction("APP/LOGOUT/FAILURE");
