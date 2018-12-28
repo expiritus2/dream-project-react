@@ -3,7 +3,7 @@ import { node } from "prop-types";
 import classNames from "classnames";
 
 const ContentWrapper = ({ children }) => (
-  <div className={classNames("content-wrapper")}>{children}</div>
+  <main className={classNames("content-wrapper")}>{children}</main>
 );
 
 ContentWrapper.propTypes = {
