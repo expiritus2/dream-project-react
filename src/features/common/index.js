@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import TranslationContext from "context/translation";
 import ReduxContext from "context/redux";
-import App from "./app";
+import App from "./components/app";
 
 const Root = ({ store }) => (
   <Provider store={store}>

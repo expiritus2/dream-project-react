@@ -3,7 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import { bool } from "prop-types";
 import { Header } from "components";
 import { ContentWrapper, Spinner } from "components";
-import commonRoutes from "../../../routes/common";
+import commonRoutes from "../../../../routes/common";
 
 const App = ({ isLoggedIn }) => {
   return (

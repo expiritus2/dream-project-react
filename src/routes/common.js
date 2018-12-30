@@ -9,11 +9,11 @@ export default [
   {
     path: "/sign-in",
     exact: false,
-    component: lazy(() => import("features/common/sign-in")),
+    component: lazy(() => import("features/common/components/sign-in")),
   },
   {
     path: "/sign-up",
     exact: false,
-    component: lazy(() => import("features/common/sign-up")),
+    component: lazy(() => import("features/common/components/sign-up")),
   },
 ];

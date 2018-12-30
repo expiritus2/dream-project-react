@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useRedux } from "hooks";
-import { authenticate } from "./modules/actions";
+import { authenticate } from "../../modules/actions";
 import App from "./App";
 
 const AppContainer = () => {
