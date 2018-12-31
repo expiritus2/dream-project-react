@@ -1,8 +1,3 @@
-import { loadable } from "utils";
-import commonRoutes from "..";
+import userRoutes from "./user";
 
-export default [
-  {
-    ...commonRoutes,
-  },
-];
+export default [{}, ...userRoutes];

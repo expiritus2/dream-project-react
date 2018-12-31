@@ -1,3 +1,3 @@
 import "./index.scss";
 
-export { default } from "./Header";
+export { default } from "./HeaderContainer";

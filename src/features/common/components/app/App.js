@@ -1,18 +1,16 @@
 import React, { Suspense } from "react";
 import { Route, Switch } from "react-router-dom";
-import { bool } from "prop-types";
 import { Header } from "components";
 import { ContentWrapper, Spinner } from "components";
-import commonRoutes from "../../../../routes/common";
 
-const App = ({ isLoggedIn }) => {
+const App = ({ routes }) => {
   return (
     <>
-      <Header isLoggedIn={isLoggedIn} />
+      <Header />
       <ContentWrapper>
         <Suspense fallback={<Spinner />}>
           <Switch>
-            {commonRoutes.map(route => {
+            {routes.map(route => {
               return <Route key={route.path} {...route} />;
             })}
           </Switch>
@@ -23,7 +21,3 @@ const App = ({ isLoggedIn }) => {
 };
 
 export default App;
-
-App.propTypes = {
-  isLoggedIn: bool.isRequired,
-};
