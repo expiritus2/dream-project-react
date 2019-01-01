@@ -1,0 +1,29 @@
+@import "global";
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  color: $main-dark-color;
+  font-family: $main-font;
+  background-color: $white-color;
+  height: 100%;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+body {
+  line-height: 1.4;
+  font-size: $global-font-size;
+}

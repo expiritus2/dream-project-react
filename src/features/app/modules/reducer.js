@@ -1,30 +1,31 @@
 import { handleActions } from "redux-actions";
-import decodeJwt from "jwt-decode";
-import { authenticate, logout } from "./actions";
+import {
+  authenticateSuccess,
+  authenticateFailure,
+  logoutSuccess,
+} from "./actions";
 
 const initialState = {
   isLoading: false,
   isLoggedIn: false,
-  token: localStorage.getItem("token")
-    ? decodeJwt(localStorage.getItem("token"))
-    : { user: { type: "" } },
+  token: localStorage.getItem("token") ? localStorage.getItem("token") : "",
 };
 
 const app = handleActions(
   {
-    [authenticate.SUCCESS]: (state, action) => ({
+    [authenticateSuccess]: (state, action) => ({
       ...state,
       token: action.payload,
       isLoggedIn: true,
       isLoading: false,
     }),
-    [authenticate.FAILURE]: state => ({
+    [authenticateFailure]: state => ({
       ...state,
       token: initialState.token,
       isLoggedIn: false,
       isLoading: false,
     }),
-    [logout.SUCCESS]: state => ({
+    [logoutSuccess]: state => ({
       ...state,
       token: initialState.token,
       isLoggedIn: false,
