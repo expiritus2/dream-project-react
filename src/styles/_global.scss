@@ -1,4 +1,4 @@
-@import "global";
+@import "variables";
 
 * {
   margin: 0;
@@ -9,6 +9,10 @@
 *::before,
 *::after {
   box-sizing: border-box;
+}
+
+html {
+  font-size: $global-font-size;
 }
 
 html,
@@ -25,5 +29,5 @@ html {
 
 body {
   line-height: 1.4;
-  font-size: $global-font-size;
+  font-size: $default-font-size;
 }
