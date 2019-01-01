@@ -4,22 +4,22 @@ export default [
   {
     path: "/",
     exact: true,
-    component: lazy(() => import("features/common/components/main")),
+    component: lazy(() => import("features/app/components/main")),
   },
   {
     path: "/sign-in",
     exact: false,
-    component: lazy(() => import("features/common/components/sign-in")),
+    component: lazy(() => import("features/app/components/sign-in")),
   },
   {
     path: "/sign-up",
     exact: false,
-    component: lazy(() => import("features/common/components/sign-up")),
+    component: lazy(() => import("features/app/components/sign-up")),
   },
 
   {
     path: "*",
     exact: false,
-    component: lazy(() => import("features/common/components/404")),
+    component: lazy(() => import("features/app/components/404")),
   },
 ];

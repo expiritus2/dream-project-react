@@ -1,16 +1,16 @@
 import React, { Suspense } from "react";
-import { Route, Switch } from "react-router-dom";
-import { Header } from "components";
-import { ContentWrapper, Spinner } from "components";
+import { Header, ContentWrapper, Spinner } from "components";
+import { Switch, Route } from "react-router-dom";
+import commonRoutes from "routes/common";
 
-const App = ({ routes }) => {
+const Anonymous = () => {
   return (
     <>
       <Header />
       <ContentWrapper>
         <Suspense fallback={<Spinner />}>
           <Switch>
-            {routes.map(route => {
+            {commonRoutes.map(route => {
               return <Route key={route.path} {...route} />;
             })}
           </Switch>
@@ -20,4 +20,4 @@ const App = ({ routes }) => {
   );
 };
 
-export default App;
+export default Anonymous;
