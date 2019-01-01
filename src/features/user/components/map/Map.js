@@ -1,4 +1,5 @@
 import React from "react";
+import { object, shape, number, func, array } from "prop-types";
 import { GoogleMap, Marker, InfoWindow } from "react-google-maps";
 
 const {
@@ -35,6 +36,23 @@ const Map = ({
       ))}
     </GoogleMap>
   );
+};
+
+Map.propTypes = {
+  onClick: func.isRequired,
+  markers: array.isRequired,
+  center: shape({
+    lat: number,
+    lng: number,
+  }).isRequired,
+  onPlacesChanged: func,
+  mapRef: object,
+  searchBoxRef: object,
+};
+
+Map.defaultProps = {
+  mapRef: null,
+  searchBoxRef: null,
 };
 
 export default Map;
