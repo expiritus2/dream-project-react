@@ -1,5 +1,5 @@
 import React from "react";
-import { object, shape, number, func, array } from "prop-types";
+import { object, shape, number, func, array, oneOfType } from "prop-types";
 import { GoogleMap, Marker, InfoWindow } from "react-google-maps";
 
 const {
@@ -17,7 +17,8 @@ const Map = ({
   return (
     <GoogleMap
       ref={mapRef}
-      defaultZoom={8}
+      defaultZoom={10}
+      defaultCenter={{ lat: 0, lng: 0 }}
       center={center}
       onClick={onClickMap}
     >
@@ -47,8 +48,8 @@ Map.propTypes = {
   onClickMap: func.isRequired,
   markers: array.isRequired,
   center: shape({
-    lat: number,
-    lng: number,
+    lat: oneOfType([number, func]),
+    lng: oneOfType([number, func]),
   }).isRequired,
   onPlacesChanged: func,
   mapRef: object,

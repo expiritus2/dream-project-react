@@ -1,25 +1,33 @@
-import React, { useRef, useCallback, useState } from "react";
+import React, { useRef, useCallback, useState, useEffect } from "react";
+import { useRedux } from "hooks";
 import { get } from "lodash-es";
 import { compose, withProps } from "recompose";
-import Map from "./Map";
 import { uniqueId } from "lodash-es";
 import { withScriptjs, withGoogleMap } from "react-google-maps";
-
-const initialMarkers = [
-  {
-    id: uniqueId(),
-    title: "Test title",
-    position: { lat: -34.397, lng: 150.644 },
-    draggable: true,
-    clickable: true,
-  },
-];
+import Map from "./Map";
 
 const MapContainer = () => {
   const searchBoxRef = useRef();
   const mapRef = useRef();
-  const [center, setCenter] = useState(initialMarkers[0].position);
-  const [markers, setMarkers] = useState(initialMarkers);
+  const [user] = useRedux("user");
+  const [center, setCenter] = useState({ lat: 0, lng: 0 });
+  const [markers, setMarkers] = useState([]);
+
+  const positionHandler = useCallback(position => {
+    const {
+      coords: { latitude, longitude },
+    } = position;
+    setCenter({ lat: latitude, lng: longitude });
+  }, []);
+
+  useEffect(() => {
+    if (user.markers.length > 0) {
+      setCenter(user.markers[0].position);
+      setMarkers(user.markers);
+    } else if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(positionHandler);
+    }
+  }, []);
 
   const onPlacesChanged = useCallback(
     () => {
