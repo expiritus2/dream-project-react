@@ -1,5 +1,5 @@
 import React from "react";
-import Map from "../map/Map";
+import Map from "../map";
 
 const PersonalArea = () => {
   return (
