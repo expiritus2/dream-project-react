@@ -12,10 +12,15 @@ const Map = ({
   center,
   markers,
   onPlacesChanged,
-  onClick,
+  onClickMap,
 }) => {
   return (
-    <GoogleMap ref={mapRef} defaultZoom={8} center={center} onClick={onClick}>
+    <GoogleMap
+      ref={mapRef}
+      defaultZoom={8}
+      center={center}
+      onClick={onClickMap}
+    >
       <SearchBox
         ref={searchBoxRef}
         controlPosition={window.google.maps.ControlPosition.TOP_LEFT}
@@ -39,7 +44,7 @@ const Map = ({
 };
 
 Map.propTypes = {
-  onClick: func.isRequired,
+  onClickMap: func.isRequired,
   markers: array.isRequired,
   center: shape({
     lat: number,

@@ -35,6 +35,7 @@ const MapContainer = () => {
 
         const nextMarkers = places.map(place => ({
           position: place.geometry.location,
+          searchBoxRef,
         }));
         const nextCenter = get(nextMarkers, "0.position", center);
         setCenter(nextCenter);
@@ -43,7 +44,7 @@ const MapContainer = () => {
     [center],
   );
 
-  const onClickHandler = useCallback(
+  const onClickMapHandler = useCallback(
     event => {
       const {
         latLng: { lat, lng },
@@ -67,7 +68,7 @@ const MapContainer = () => {
       center={center}
       markers={markers}
       onPlacesChanged={onPlacesChanged}
-      onClick={onClickHandler}
+      onClickMap={onClickMapHandler}
     />
   );
 };
