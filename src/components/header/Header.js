@@ -1,6 +1,6 @@
 import React from "react";
 import { Logo, Navigation } from "./components";
-// import { bool } from "prop-types";
+import { bool } from "prop-types";
 
 const Header = ({ isLoggedIn }) => (
   <header className="main-header">
@@ -9,12 +9,12 @@ const Header = ({ isLoggedIn }) => (
   </header>
 );
 
-// Header.propTypes = {
-//   isLoggedIn: bool,
-// };
+Header.propTypes = {
+  isLoggedIn: bool,
+};
 
-// Header.defaultProps = {
-//   isLoggedIn: false,
-// };
+Header.defaultProps = {
+  isLoggedIn: false,
+};
 
 export default Header;

@@ -1,4 +1,5 @@
 import React, { lazy, Suspense } from "react";
+import { bool } from "prop-types";
 import { Spinner } from "components";
 
 const Navigation = lazy(() => import("./Navigation"));
@@ -10,6 +11,14 @@ const NavigationContainer = ({ isLoggedIn }) => {
       {isLoggedIn ? <Navigation /> : <AuthLinks />}
     </Suspense>
   );
+};
+
+NavigationContainer.propTypes = {
+  isLoggedIn: bool,
+};
+
+NavigationContainer.defaultProps = {
+  isLoggedIn: false,
 };
 
 export default NavigationContainer;

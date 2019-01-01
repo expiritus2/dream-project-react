@@ -1,8 +1,10 @@
 import { combineReducers } from "redux";
 import app from "features/app/modules/reducer";
+import user from "features/user/modules/reducer";
 
 const reducers = combineReducers({
   app,
+  user,
 });
 
 // Clear all redux state when user logout from application
