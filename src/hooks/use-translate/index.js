@@ -1,9 +1,9 @@
 import { useCallback, useContext } from "react";
 import TranslationContext from "context/translation";
-import translations from "../../en";
+import translations from "../../translations";
 
 export default () => {
-  const locale = useContext(TranslationContext);
+  const translationContext = useContext(TranslationContext);
 
   const translate = useCallback(
     (key, interpolation) => {
@@ -12,7 +12,7 @@ export default () => {
       }
       const keys = key.split(".");
       let index = 0;
-      let currentKey = translations;
+      let currentKey = translations[translationContext.locale];
       while (keys.length !== index) {
         currentKey = currentKey[keys[index]] ? currentKey[keys[index]] : key;
         index += 1;
@@ -30,8 +30,8 @@ export default () => {
       }
       return currentKey || key;
     },
-    [locale],
+    [translationContext],
   );
 
-  return [translate, locale];
+  return [translate, translationContext];
 };

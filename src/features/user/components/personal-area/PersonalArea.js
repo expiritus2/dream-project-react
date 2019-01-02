@@ -13,7 +13,6 @@ const PersonalArea = () => {
 
   return (
     <>
-      <div>Personal Area</div>
       <Map />
     </>
   );
