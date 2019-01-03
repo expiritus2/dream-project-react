@@ -62,9 +62,21 @@ const MapContainer = () => {
         position: { lat: lat(), lng: lng() },
         draggable: true,
         clickable: true,
+        isShowInfo: true,
       };
 
       setMarkers(prevMarkers => [...prevMarkers, newMarker]);
+    },
+    [markers],
+  );
+
+  const onClickMarkerHandler = useCallback(
+    markerIndex => {
+      const copyMarkers = [...markers];
+      const marker = copyMarkers[markerIndex];
+
+      marker.isShowInfo = marker.isShowInfo ? !marker.isShowInfo : true;
+      setMarkers(copyMarkers);
     },
     [markers],
   );
@@ -77,6 +89,7 @@ const MapContainer = () => {
       markers={markers}
       onPlacesChanged={onPlacesChanged}
       onClickMap={onClickMapHandler}
+      onClickMarker={onClickMarkerHandler}
     />
   );
 };

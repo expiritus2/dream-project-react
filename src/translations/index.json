@@ -1,12 +1,12 @@
 {
-  "en": {
+  "US": {
     "header": {
       "navigation": {
         "personalArea": "Personal Area"
       }
     }
   },
-  "ru": {
+  "RU": {
     "header": {
       "navigation": {
         "personalArea": "Личный кабинет"

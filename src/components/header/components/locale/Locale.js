@@ -1,29 +1,29 @@
 import React, { useState, useCallback, useContext } from "react";
 import TranslationContext from "context/translation";
-import Select from "react-select";
+import ReactFlagsSelect from "react-flags-select";
 
-const options = [{ value: "en", label: "EN" }, { value: "ru", label: "RU" }];
-
-const savedLocale = {
-  value: localStorage.getItem("locale"),
-  label: localStorage.getItem("locale").toUpperCase(),
-};
+const savedLocale = () =>
+  localStorage.getItem("locale") ? localStorage.getItem("locale") : "US";
 
 const Locale = () => {
   const translationContext = useContext(TranslationContext);
   const [selectedOption, setSelectdOption] = useState(savedLocale);
 
-  const handleChange = useCallback(
-    selectedOption => {
-      setSelectdOption(selectedOption);
-      translationContext.switchLocale(selectedOption.value);
-      localStorage.setItem("locale", selectedOption.value);
-    },
-    [selectedOption],
-  );
+  const handleChange = useCallback(selectedOption => {
+    setSelectdOption(selectedOption);
+    translationContext.switchLocale(selectedOption);
+    localStorage.setItem("locale", selectedOption);
+  }, []);
 
   return (
-    <Select value={selectedOption} onChange={handleChange} options={options} />
+    <>
+      <ReactFlagsSelect
+        defaultCountry={selectedOption}
+        countries={["US", "RU"]}
+        customLabels={{ US: "US", RU: "RU" }}
+        onSelect={handleChange}
+      />
+    </>
   );
 };
 

@@ -6,7 +6,7 @@ const initialMarkers = [
   {
     id: uniqueId(),
     title: "Test title",
-    position: { lat: -34.397, lng: 150.644 },
+    position: { lat: 53.8427535, lng: 27.646205899999998 },
     draggable: true,
     clickable: true,
   },

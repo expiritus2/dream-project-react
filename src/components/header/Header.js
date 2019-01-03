@@ -6,7 +6,7 @@ import Locale from "./components/locale";
 const Header = ({ isLoggedIn }) => (
   <header className="main-header">
     <Logo />
-    <div>
+    <div className="main-header__nav-wrapper">
       <Navigation isLoggedIn={isLoggedIn} />
       <Locale />
     </div>
