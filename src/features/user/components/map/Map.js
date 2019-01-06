@@ -13,6 +13,8 @@ const Map = ({
   markers,
   onPlacesChanged,
   onClickMap,
+  onClickMarker,
+  onDeleteMarker,
 }) => {
   return (
     <GoogleMap
@@ -33,11 +35,23 @@ const Map = ({
           className="map-search"
         />
       </SearchBox>
-      {markers.map(marker => (
-        <Marker key={marker.id} {...marker}>
-          <InfoWindow>
-            <div>{marker.title}</div>
-          </InfoWindow>
+      {markers.map((marker, index) => (
+        <Marker
+          key={marker.id}
+          onClick={() => onClickMarker(index)}
+          {...marker}
+        >
+          {(marker.isShowInfo === undefined || marker.isShowInfo) && (
+            <InfoWindow onCloseClick={() => onClickMarker(index)}>
+              <div>
+                <div>{marker.titleInput}</div>
+                <div>{marker.title}</div>
+                <button onClick={() => onDeleteMarker(index)} type="button">
+                  Delete
+                </button>
+              </div>
+            </InfoWindow>
+          )}
         </Marker>
       ))}
     </GoogleMap>

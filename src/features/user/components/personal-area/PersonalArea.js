@@ -8,12 +8,10 @@ const PersonalArea = () => {
 
   useEffect(() => {
     actions.userMarkers();
-    return null;
   }, []);
 
   return (
     <>
-      <div>Personal Area</div>
       <Map />
     </>
   );

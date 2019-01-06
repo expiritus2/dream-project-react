@@ -1,3 +1,3 @@
 import { createContext } from "react";
 
-export default createContext("en");
+export default createContext({ locale: "en", switchLocale: () => {} });

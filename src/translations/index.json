@@ -1,0 +1,16 @@
+{
+  "US": {
+    "header": {
+      "navigation": {
+        "personalArea": "Personal Area"
+      }
+    }
+  },
+  "RU": {
+    "header": {
+      "navigation": {
+        "personalArea": "Личный кабинет"
+      }
+    }
+  }
+}

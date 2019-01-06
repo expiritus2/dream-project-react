@@ -5,11 +5,15 @@ import { compose, withProps } from "recompose";
 import { uniqueId } from "lodash-es";
 import { withScriptjs, withGoogleMap } from "react-google-maps";
 import Map from "./Map";
+import { AutocompleteInput } from "components";
+import { autocompleteNames } from "features/user/modules/actions";
 
 const MapContainer = () => {
   const searchBoxRef = useRef();
   const mapRef = useRef();
-  const [user] = useRedux("user");
+
+  const [user, actions] = useRedux("user", { autocompleteNames });
+
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
   const [markers, setMarkers] = useState([]);
 
@@ -29,42 +33,59 @@ const MapContainer = () => {
     }
   }, []);
 
-  const onPlacesChanged = useCallback(
-    () => {
-      const places = searchBoxRef.current.getPlaces();
-      const bounds = new window.google.maps.LatLngBounds();
+  const changePlaces = useCallback(() => {
+    const places = searchBoxRef.current.getPlaces();
+    const bounds = new window.google.maps.LatLngBounds();
 
-      places.forEach(place => {
-        if (place.geometry.viewport) {
-          bounds.union(place.geometry.viewport);
-        } else {
-          bounds.extend(place.geometry.location);
-        }
+    places.forEach(place => {
+      if (place.geometry.viewport) {
+        bounds.union(place.geometry.viewport);
+      } else {
+        bounds.extend(place.geometry.location);
+      }
 
-        const nextMarkers = places.map(place => ({
-          position: place.geometry.location,
-          searchBoxRef,
-        }));
-        const nextCenter = get(nextMarkers, "0.position", center);
-        setCenter(nextCenter);
-      });
+      const nextMarkers = places.map(place => ({
+        position: place.geometry.location,
+        searchBoxRef,
+      }));
+      const nextCenter = get(nextMarkers, "0.position", center);
+      setCenter(nextCenter);
+    });
+  }, []);
+
+  const addMarker = useCallback(event => {
+    const {
+      latLng: { lat, lng },
+    } = event;
+    const newMarker = {
+      id: uniqueId(),
+      position: { lat: lat(), lng: lng() },
+      titleInput: <AutocompleteInput items={user.autocompleteNames} />,
+      draggable: true,
+      clickable: true,
+      isShowInfo: true,
+    };
+
+    setMarkers(prevMarkers => [...prevMarkers, newMarker]);
+    actions.autocompleteNames();
+  }, []);
+
+  const deleteMarker = useCallback(
+    index => {
+      const copyMarkers = [...markers];
+      copyMarkers.splice(index, 1);
+      setMarkers(copyMarkers);
     },
-    [center],
+    [markers],
   );
 
-  const onClickMapHandler = useCallback(
-    event => {
-      const {
-        latLng: { lat, lng },
-      } = event;
-      const newMarker = {
-        id: uniqueId(),
-        position: { lat: lat(), lng: lng() },
-        draggable: true,
-        clickable: true,
-      };
+  const toggleMarkerInfo = useCallback(
+    markerIndex => {
+      const copyMarkers = [...markers];
+      const marker = copyMarkers[markerIndex];
 
-      setMarkers(prevMarkers => [...prevMarkers, newMarker]);
+      marker.isShowInfo = marker.isShowInfo ? !marker.isShowInfo : true;
+      setMarkers(copyMarkers);
     },
     [markers],
   );
@@ -75,8 +96,10 @@ const MapContainer = () => {
       searchBoxRef={searchBoxRef}
       center={center}
       markers={markers}
-      onPlacesChanged={onPlacesChanged}
-      onClickMap={onClickMapHandler}
+      onPlacesChanged={changePlaces}
+      onClickMap={addMarker}
+      onClickMarker={toggleMarkerInfo}
+      onDeleteMarker={deleteMarker}
     />
   );
 };

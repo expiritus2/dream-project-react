@@ -1,11 +1,15 @@
 import React from "react";
 import { Logo, Navigation } from "./components";
 import { bool } from "prop-types";
+import Locale from "./components/locale";
 
 const Header = ({ isLoggedIn }) => (
   <header className="main-header">
     <Logo />
-    <Navigation isLoggedIn={isLoggedIn} />
+    <div className="main-header__nav-wrapper">
+      <Navigation isLoggedIn={isLoggedIn} />
+      <Locale />
+    </div>
   </header>
 );
 
