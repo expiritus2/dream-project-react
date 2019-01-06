@@ -5,11 +5,15 @@ import { compose, withProps } from "recompose";
 import { uniqueId } from "lodash-es";
 import { withScriptjs, withGoogleMap } from "react-google-maps";
 import Map from "./Map";
+import { AutocompleteInput } from "components";
+import { autocompleteNames } from "features/user/modules/actions";
 
 const MapContainer = () => {
   const searchBoxRef = useRef();
   const mapRef = useRef();
-  const [user] = useRedux("user");
+
+  const [user, actions] = useRedux("user", { autocompleteNames });
+
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
   const [markers, setMarkers] = useState([]);
 
@@ -29,7 +33,7 @@ const MapContainer = () => {
     }
   }, []);
 
-  const onPlacesChanged = useCallback(
+  const changePlaces = useCallback(
     () => {
       const places = searchBoxRef.current.getPlaces();
       const bounds = new window.google.maps.LatLngBounds();
@@ -52,7 +56,19 @@ const MapContainer = () => {
     [center],
   );
 
-  const onClickMapHandler = useCallback(
+  // useEffect(() => {
+  //   const copyMarkers = [...markers];
+  //   const lastAddedMarker = copyMarkers[markers.length - 1];
+  //   if (lastAddedMarker) {
+  //     lastAddedMarker.title = markerTitle;
+  //   }
+  // }, [markerTitle]);
+  //
+  // const changeMarkerTitle = useCallback(event => {
+  //   setMarkerTitle(event.target.value);
+  // });
+
+  const addMarker = useCallback(
     event => {
       const {
         latLng: { lat, lng },
@@ -60,17 +76,25 @@ const MapContainer = () => {
       const newMarker = {
         id: uniqueId(),
         position: { lat: lat(), lng: lng() },
+        titleInput: <AutocompleteInput items={user.autocompleteNames} />,
         draggable: true,
         clickable: true,
         isShowInfo: true,
       };
 
       setMarkers(prevMarkers => [...prevMarkers, newMarker]);
+      actions.autocompleteNames();
     },
     [markers],
   );
 
-  const onClickMarkerHandler = useCallback(
+  const deleteMarker = useCallback(index => {
+    const copyMarkers = [...markers];
+    copyMarkers.splice(index, 1);
+    setMarkers(copyMarkers);
+  });
+
+  const toggleMarkerInfo = useCallback(
     markerIndex => {
       const copyMarkers = [...markers];
       const marker = copyMarkers[markerIndex];
@@ -87,9 +111,10 @@ const MapContainer = () => {
       searchBoxRef={searchBoxRef}
       center={center}
       markers={markers}
-      onPlacesChanged={onPlacesChanged}
-      onClickMap={onClickMapHandler}
-      onClickMarker={onClickMarkerHandler}
+      onPlacesChanged={changePlaces}
+      onClickMap={addMarker}
+      onClickMarker={toggleMarkerInfo}
+      onDeleteMarker={deleteMarker}
     />
   );
 };

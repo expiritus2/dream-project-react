@@ -14,7 +14,7 @@ const Map = ({
   onPlacesChanged,
   onClickMap,
   onClickMarker,
-  isShowInfo,
+  onDeleteMarker,
 }) => {
   return (
     <GoogleMap
@@ -43,7 +43,13 @@ const Map = ({
         >
           {(marker.isShowInfo === undefined || marker.isShowInfo) && (
             <InfoWindow onCloseClick={() => onClickMarker(index)}>
-              <div>{marker.title}</div>
+              <div>
+                <div>{marker.titleInput}</div>
+                <div>{marker.title}</div>
+                <button onClick={() => onDeleteMarker(index)} type="button">
+                  Delete
+                </button>
+              </div>
             </InfoWindow>
           )}
         </Marker>
