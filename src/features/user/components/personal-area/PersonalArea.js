@@ -8,7 +8,6 @@ const PersonalArea = () => {
 
   useEffect(() => {
     actions.userMarkers();
-    return null;
   }, []);
 
   return (

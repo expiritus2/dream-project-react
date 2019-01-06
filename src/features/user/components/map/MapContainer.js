@@ -33,66 +33,51 @@ const MapContainer = () => {
     }
   }, []);
 
-  const changePlaces = useCallback(
-    () => {
-      const places = searchBoxRef.current.getPlaces();
-      const bounds = new window.google.maps.LatLngBounds();
+  const changePlaces = useCallback(() => {
+    const places = searchBoxRef.current.getPlaces();
+    const bounds = new window.google.maps.LatLngBounds();
 
-      places.forEach(place => {
-        if (place.geometry.viewport) {
-          bounds.union(place.geometry.viewport);
-        } else {
-          bounds.extend(place.geometry.location);
-        }
+    places.forEach(place => {
+      if (place.geometry.viewport) {
+        bounds.union(place.geometry.viewport);
+      } else {
+        bounds.extend(place.geometry.location);
+      }
 
-        const nextMarkers = places.map(place => ({
-          position: place.geometry.location,
-          searchBoxRef,
-        }));
-        const nextCenter = get(nextMarkers, "0.position", center);
-        setCenter(nextCenter);
-      });
-    },
-    [center],
-  );
+      const nextMarkers = places.map(place => ({
+        position: place.geometry.location,
+        searchBoxRef,
+      }));
+      const nextCenter = get(nextMarkers, "0.position", center);
+      setCenter(nextCenter);
+    });
+  }, []);
 
-  // useEffect(() => {
-  //   const copyMarkers = [...markers];
-  //   const lastAddedMarker = copyMarkers[markers.length - 1];
-  //   if (lastAddedMarker) {
-  //     lastAddedMarker.title = markerTitle;
-  //   }
-  // }, [markerTitle]);
-  //
-  // const changeMarkerTitle = useCallback(event => {
-  //   setMarkerTitle(event.target.value);
-  // });
+  const addMarker = useCallback(event => {
+    const {
+      latLng: { lat, lng },
+    } = event;
+    const newMarker = {
+      id: uniqueId(),
+      position: { lat: lat(), lng: lng() },
+      titleInput: <AutocompleteInput items={user.autocompleteNames} />,
+      draggable: true,
+      clickable: true,
+      isShowInfo: true,
+    };
 
-  const addMarker = useCallback(
-    event => {
-      const {
-        latLng: { lat, lng },
-      } = event;
-      const newMarker = {
-        id: uniqueId(),
-        position: { lat: lat(), lng: lng() },
-        titleInput: <AutocompleteInput items={user.autocompleteNames} />,
-        draggable: true,
-        clickable: true,
-        isShowInfo: true,
-      };
+    setMarkers(prevMarkers => [...prevMarkers, newMarker]);
+    actions.autocompleteNames();
+  }, []);
 
-      setMarkers(prevMarkers => [...prevMarkers, newMarker]);
-      actions.autocompleteNames();
+  const deleteMarker = useCallback(
+    index => {
+      const copyMarkers = [...markers];
+      copyMarkers.splice(index, 1);
+      setMarkers(copyMarkers);
     },
     [markers],
   );
-
-  const deleteMarker = useCallback(index => {
-    const copyMarkers = [...markers];
-    copyMarkers.splice(index, 1);
-    setMarkers(copyMarkers);
-  });
 
   const toggleMarkerInfo = useCallback(
     markerIndex => {

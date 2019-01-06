@@ -9,12 +9,9 @@ const AppContainer = () => {
   const [locale, setLocale] = useState(getLocale);
   const [app, actions] = useRedux("app", { authenticate });
 
-  const switchLocale = useCallback(
-    newLocale => {
-      setLocale(newLocale);
-    },
-    [locale],
-  );
+  const switchLocale = useCallback(newLocale => {
+    setLocale(newLocale);
+  }, []);
 
   useEffect(
     () => {
