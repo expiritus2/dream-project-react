@@ -24,6 +24,15 @@ const autocompleteName = [
   { label: "apple" },
   { label: "banana" },
   { label: "pear" },
+  { label: "apple" },
+  { label: "banana" },
+  { label: "pear" },
+  { label: "apple" },
+  { label: "banana" },
+  { label: "pear" },
+  { label: "apple" },
+  { label: "banana" },
+  { label: "pear" },
 ];
 
 export function* getUserMarkers() {
@@ -34,7 +43,7 @@ export function* getUserMarkers() {
   }
 }
 
-export function* getAutocompleteMarkers() {
+export function* getAutocompleteNames() {
   try {
     yield put(autocompleteNamesSuccess(autocompleteName));
   } catch (e) {
@@ -44,5 +53,5 @@ export function* getAutocompleteMarkers() {
 
 export default function*() {
   yield takeEvery(userMarkers, getUserMarkers);
-  yield takeEvery(autocompleteNames, getAutocompleteMarkers);
+  yield takeEvery(autocompleteNames, getAutocompleteNames);
 }

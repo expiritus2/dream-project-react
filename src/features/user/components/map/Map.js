@@ -44,8 +44,7 @@ const Map = ({
           {(marker.isShowInfo === undefined || marker.isShowInfo) && (
             <InfoWindow onCloseClick={() => onClickMarker(index)}>
               <div>
-                <div>{marker.titleInput}</div>
-                <div>{marker.title}</div>
+                {marker.title && <div>{marker.title}</div>}
                 <button onClick={() => onDeleteMarker(index)} type="button">
                   Delete
                 </button>

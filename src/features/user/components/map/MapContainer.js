@@ -4,15 +4,15 @@ import { get } from "lodash-es";
 import { compose, withProps } from "recompose";
 import { uniqueId } from "lodash-es";
 import { withScriptjs, withGoogleMap } from "react-google-maps";
+import { openModal } from "components/modal/modules/actions";
+import { AutocompleteInput } from "components/inputs";
 import Map from "./Map";
-import { AutocompleteInput } from "components";
-import { autocompleteNames } from "features/user/modules/actions";
 
 const MapContainer = () => {
   const searchBoxRef = useRef();
   const mapRef = useRef();
 
-  const [user, actions] = useRedux("user", { autocompleteNames });
+  const [user, actions] = useRedux("user", { openModal });
 
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
   const [markers, setMarkers] = useState([]);
@@ -60,14 +60,34 @@ const MapContainer = () => {
     const newMarker = {
       id: uniqueId(),
       position: { lat: lat(), lng: lng() },
-      titleInput: <AutocompleteInput items={user.autocompleteNames} />,
       draggable: true,
       clickable: true,
       isShowInfo: true,
     };
 
     setMarkers(prevMarkers => [...prevMarkers, newMarker]);
-    actions.autocompleteNames();
+
+    actions.openModal({
+      title: "Test title",
+      content: (
+        <AutocompleteInput
+          items={user.autocompleteNames}
+          menuStyle={{
+            borderRadius: "3px",
+            boxShadow: "rgba(0, 0, 0, 0.1) 0px 2px 12px",
+            background: "rgba(255, 255, 255, 0.9)",
+            padding: "2px 0px",
+            fontSize: "90%",
+            position: "fixed",
+            overflow: "auto",
+            maxHeight: "50%",
+            left: 0,
+            top: "" + undefined,
+            minWidth: "181px",
+          }}
+        />
+      ),
+    });
   }, []);
 
   const deleteMarker = useCallback(

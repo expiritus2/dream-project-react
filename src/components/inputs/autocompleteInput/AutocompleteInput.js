@@ -21,10 +21,11 @@ const AutocompleteInput = ({ items, menuStyle }) => {
         </div>
       )}
       menuStyle={menuStyle}
-      items={items || []}
+      items={items}
       value={value}
       onChange={e => setValue(e.target.value)}
       onSelect={val => setValue(val)}
+      onFocus={e => console.log(e)}
     />
   );
 };
