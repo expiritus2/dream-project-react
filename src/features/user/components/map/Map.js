@@ -1,20 +1,21 @@
 import React from "react";
 import { object, shape, number, func, array, oneOfType } from "prop-types";
-import { GoogleMap, Marker, InfoWindow } from "react-google-maps";
-
-const {
-  SearchBox,
-} = require("react-google-maps/lib/components/places/SearchBox");
+import { GoogleMap, Marker, InfoWindow, Circle } from "react-google-maps";
+import { SearchBox } from "react-google-maps/lib/components/places/SearchBox";
 
 const Map = ({
   mapRef,
   searchBoxRef,
+  circleRef,
   center,
   markers,
   onPlacesChanged,
   onClickMap,
   onClickMarker,
   onDeleteMarker,
+  onDragMarker,
+  onChangeCircleCenter,
+  onChangeCircleRadius,
 }) => {
   return (
     <GoogleMap
@@ -36,22 +37,35 @@ const Map = ({
         />
       </SearchBox>
       {markers.map((marker, index) => (
-        <Marker
-          key={marker.id}
-          onClick={() => onClickMarker(index)}
-          {...marker}
-        >
-          {(marker.isShowInfo === undefined || marker.isShowInfo) && (
-            <InfoWindow onCloseClick={() => onClickMarker(index)}>
-              <div>
-                {marker.title && <div>{marker.title}</div>}
-                <button onClick={() => onDeleteMarker(index)} type="button">
-                  Delete
-                </button>
-              </div>
-            </InfoWindow>
-          )}
-        </Marker>
+        <div key={marker.id}>
+          <Marker
+            onClick={() => onClickMarker(index)}
+            position={marker.position}
+            clickable={marker.clickable}
+            draggable={marker.draggable}
+            onDrag={event => onDragMarker(event, index)}
+          >
+            {(marker.isShowInfo === undefined || marker.isShowInfo) && (
+              <InfoWindow onCloseClick={() => onClickMarker(index)}>
+                <div>
+                  {marker.title && <div>{marker.title}</div>}
+                  <button onClick={() => onDeleteMarker(index)} type="button">
+                    Delete
+                  </button>
+                </div>
+              </InfoWindow>
+            )}
+          </Marker>
+          <Circle
+            ref={circleRef}
+            center={marker.position}
+            radius={10000}
+            editable={true}
+            onRadiusChanged={() => onChangeCircleRadius(index)}
+            onCenterChanged={() => onChangeCircleCenter(index)}
+            onMouseDown={() => onChangeCircleCenter(index)}
+          />
+        </div>
       ))}
     </GoogleMap>
   );

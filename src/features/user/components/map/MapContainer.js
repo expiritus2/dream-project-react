@@ -11,6 +11,7 @@ import Map from "./Map";
 const MapContainer = () => {
   const searchBoxRef = useRef();
   const mapRef = useRef();
+  const circleRef = useRef();
 
   const [user, actions] = useRedux("user", { openModal });
 
@@ -82,7 +83,7 @@ const MapContainer = () => {
             overflow: "auto",
             maxHeight: "50%",
             left: 0,
-            top: "" + undefined,
+            top: undefined,
             minWidth: "181px",
           }}
         />
@@ -110,16 +111,40 @@ const MapContainer = () => {
     [markers],
   );
 
+  const changeMarkerPosition = useCallback((event, markerIndex) => {
+    const copyMarkers = [...markers];
+    copyMarkers[markerIndex].position = {
+      lat: event.latLng.lat(),
+      lng: event.latLng.lng(),
+    };
+    setMarkers(copyMarkers);
+  });
+
+  const onChangeCircleCenter = useCallback(markerIndex => {
+    // const {lat, lng} = circleRef.current.getCenter();
+    // const copyMarkers = [...markers];
+    // copyMarkers[markerIndex].position = {lat: lat(), lng: lng()};
+    // setMarkers(copyMarkers);
+  });
+
+  const onChangeCircleRadius = useCallback(markerIndex => {
+    // console.log(circleRef.current.getRadius());
+  });
+
   return (
     <Map
       mapRef={mapRef}
       searchBoxRef={searchBoxRef}
+      circleRef={circleRef}
       center={center}
       markers={markers}
       onPlacesChanged={changePlaces}
       onClickMap={addMarker}
       onClickMarker={toggleMarkerInfo}
       onDeleteMarker={deleteMarker}
+      onDragMarker={changeMarkerPosition}
+      onChangeCircleCenter={onChangeCircleCenter}
+      onChangeCircleRadius={onChangeCircleRadius}
     />
   );
 };
