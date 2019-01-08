@@ -3,7 +3,7 @@ import { array, object } from "prop-types";
 import Autocomplete from "react-autocomplete";
 import { uniqueId } from "lodash-es";
 
-const AutocompleteInput = ({ items, menuStyle }) => {
+const AutocompleteInput = ({ items, menuStyle, onChange, onSelect }) => {
   const [value, setValue] = useState("");
 
   return (
@@ -23,8 +23,14 @@ const AutocompleteInput = ({ items, menuStyle }) => {
       menuStyle={menuStyle}
       items={items}
       value={value}
-      onChange={e => setValue(e.target.value)}
-      onSelect={val => setValue(val)}
+      onChange={e => {
+        setValue(e.target.value);
+        onChange(e);
+      }}
+      onSelect={val => {
+        setValue(val);
+        onSelect(val);
+      }}
       onFocus={e => console.log(e)}
     />
   );

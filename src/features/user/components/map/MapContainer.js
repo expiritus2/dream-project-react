@@ -13,10 +13,11 @@ const MapContainer = () => {
   const mapRef = useRef();
   const circleRef = useRef();
 
-  const [user, actions] = useRedux("user", { openModal });
+  const [[user, modal], actions] = useRedux(["user", "modal"], { openModal });
 
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
   const [markers, setMarkers] = useState([]);
+  const [newMarkerName, setNewMarkerName] = useState(null);
 
   const positionHandler = useCallback(position => {
     const {
@@ -33,6 +34,33 @@ const MapContainer = () => {
       navigator.geolocation.getCurrentPosition(positionHandler);
     }
   }, []);
+
+  useEffect(
+    () => {
+      if (!modal.isOpen) {
+        const copyMarkers = [...markers];
+        const profiledMarkers = copyMarkers.filter(marker => {
+          return !!marker.title;
+        });
+        if (profiledMarkers.length > 0) {
+          setMarkers(profiledMarkers);
+        }
+      }
+    },
+    [modal.isOpen],
+  );
+
+  useEffect(
+    () => {
+      const copyMarkers = [...markers];
+      console.log(newMarkerName);
+      if (copyMarkers.length > 0) {
+        copyMarkers[copyMarkers.length - 1].title = newMarkerName;
+        setMarkers(copyMarkers);
+      }
+    },
+    [newMarkerName],
+  );
 
   const changePlaces = useCallback(() => {
     const places = searchBoxRef.current.getPlaces();
@@ -86,6 +114,8 @@ const MapContainer = () => {
             top: undefined,
             minWidth: "181px",
           }}
+          onChange={event => setNewMarkerName(event.target.value)}
+          onSelect={val => setNewMarkerName(val)}
         />
       ),
     });
