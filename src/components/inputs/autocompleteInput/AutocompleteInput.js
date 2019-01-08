@@ -31,7 +31,6 @@ const AutocompleteInput = ({ items, menuStyle, onChange, onSelect }) => {
         setValue(val);
         onSelect(val);
       }}
-      onFocus={e => console.log(e)}
     />
   );
 };
