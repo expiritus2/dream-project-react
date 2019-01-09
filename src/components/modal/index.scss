@@ -41,4 +41,27 @@
   &.open {
     display: block;
   }
+
+  &__title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+  }
+
+  &__inner-holder {
+    position: relative;
+    padding: 20px 30px;
+  }
+
+  &__close {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 20px;
+    height: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+  }
 }

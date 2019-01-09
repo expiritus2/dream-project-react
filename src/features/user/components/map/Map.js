@@ -13,14 +13,14 @@ const Map = ({
   onClickMap,
   onClickMarker,
   onDeleteMarker,
+  onAddMoreMarkerInfo,
   onDragMarker,
-  onChangeCircleCenter,
   onChangeCircleRadius,
 }) => {
   return (
     <GoogleMap
       ref={mapRef}
-      defaultZoom={10}
+      defaultZoom={13}
       defaultCenter={{ lat: 0, lng: 0 }}
       center={center}
       onClick={onClickMap}
@@ -52,6 +52,9 @@ const Map = ({
                   <button onClick={() => onDeleteMarker(index)} type="button">
                     Delete
                   </button>
+                  <button onClick={() => onAddMoreMarkerInfo(index)}>
+                    Add more info
+                  </button>
                 </div>
               </InfoWindow>
             )}
@@ -59,11 +62,9 @@ const Map = ({
           <Circle
             ref={circleRef}
             center={marker.position}
-            radius={10000}
+            radius={marker.radius}
             editable={true}
             onRadiusChanged={() => onChangeCircleRadius(index)}
-            onCenterChanged={() => onChangeCircleCenter(index)}
-            onMouseDown={() => onChangeCircleCenter(index)}
           />
         </div>
       ))}

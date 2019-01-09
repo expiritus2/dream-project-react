@@ -15,6 +15,7 @@ const initialMarkers = [
     title: "Test title",
     position: { lat: 53.8427535, lng: 27.646205899999998 },
     userDate: new Date().getTime(),
+    radius: 1000, // meters
     draggable: true,
     clickable: true,
   },

@@ -5,7 +5,8 @@ import { compose, withProps } from "recompose";
 import { uniqueId } from "lodash-es";
 import { withScriptjs, withGoogleMap } from "react-google-maps";
 import { openModal } from "components/modal/modules/actions";
-import { AutocompleteInput } from "components/inputs";
+import MarkerInfoForm from "../marker-info-form";
+
 import Map from "./Map";
 
 const MapContainer = () => {
@@ -17,7 +18,6 @@ const MapContainer = () => {
 
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
   const [markers, setMarkers] = useState([]);
-  const [newMarkerName, setNewMarkerName] = useState(null);
 
   const positionHandler = useCallback(position => {
     const {
@@ -50,17 +50,16 @@ const MapContainer = () => {
     [modal.isOpen],
   );
 
-  useEffect(
-    () => {
-      const copyMarkers = [...markers];
-      console.log(newMarkerName);
-      if (copyMarkers.length > 0) {
-        copyMarkers[copyMarkers.length - 1].title = newMarkerName;
-        setMarkers(copyMarkers);
-      }
-    },
-    [newMarkerName],
-  );
+  // useEffect(
+  //   () => {
+  //     const copyMarkers = [...markers];
+  //     if (copyMarkers.length > 0) {
+  //       copyMarkers[copyMarkers.length - 1].title = newMarkerName;
+  //       setMarkers(copyMarkers);
+  //     }
+  //   },
+  //   [newMarkerName],
+  // );
 
   const changePlaces = useCallback(() => {
     const places = searchBoxRef.current.getPlaces();
@@ -82,13 +81,20 @@ const MapContainer = () => {
     });
   }, []);
 
+  const setMarkerName = useCallback((marker, name) => {
+    marker.title = name;
+    setMarkers(prevMarkers => [...prevMarkers]);
+  });
+
   const addMarker = useCallback(event => {
     const {
       latLng: { lat, lng },
     } = event;
     const newMarker = {
       id: uniqueId(),
+      title: "",
       position: { lat: lat(), lng: lng() },
+      radius: 500,
       draggable: true,
       clickable: true,
       isShowInfo: true,
@@ -97,25 +103,12 @@ const MapContainer = () => {
     setMarkers(prevMarkers => [...prevMarkers, newMarker]);
 
     actions.openModal({
-      title: "Test title",
+      title: "Add marker info",
       content: (
-        <AutocompleteInput
-          items={user.autocompleteNames}
-          menuStyle={{
-            borderRadius: "3px",
-            boxShadow: "rgba(0, 0, 0, 0.1) 0px 2px 12px",
-            background: "rgba(255, 255, 255, 0.9)",
-            padding: "2px 0px",
-            fontSize: "90%",
-            position: "fixed",
-            overflow: "auto",
-            maxHeight: "50%",
-            left: 0,
-            top: undefined,
-            minWidth: "181px",
-          }}
-          onChange={event => setNewMarkerName(event.target.value)}
-          onSelect={val => setNewMarkerName(val)}
+        <MarkerInfoForm
+          autocompleteNames={user.autocompleteNames}
+          setNewMarkerName={name => setMarkerName(newMarker, name)}
+          title=""
         />
       ),
     });
@@ -141,7 +134,7 @@ const MapContainer = () => {
     [markers],
   );
 
-  const changeMarkerPosition = useCallback((event, markerIndex) => {
+  const onDragMarker = useCallback((event, markerIndex) => {
     const copyMarkers = [...markers];
     copyMarkers[markerIndex].position = {
       lat: event.latLng.lat(),
@@ -150,15 +143,24 @@ const MapContainer = () => {
     setMarkers(copyMarkers);
   });
 
-  const onChangeCircleCenter = useCallback(markerIndex => {
-    // const {lat, lng} = circleRef.current.getCenter();
-    // const copyMarkers = [...markers];
-    // copyMarkers[markerIndex].position = {lat: lat(), lng: lng()};
-    // setMarkers(copyMarkers);
+  const onChangeCircleRadius = useCallback(markerIndex => {
+    const radius = circleRef.current.getRadius();
+    const copyMarkers = [...markers];
+    copyMarkers[markerIndex].radius = radius;
+    setMarkers(copyMarkers);
   });
 
-  const onChangeCircleRadius = useCallback(markerIndex => {
-    // console.log(circleRef.current.getRadius());
+  const onAddMoreMarkerInfo = useCallback(markerIndex => {
+    actions.openModal({
+      title: "Add info",
+      content: (
+        <MarkerInfoForm
+          autocompleteNames={user.autocompleteNames}
+          setNewMarkerName={name => setMarkerName(markers[markerIndex], name)}
+          title={markers[markerIndex].title}
+        />
+      ),
+    });
   });
 
   return (
@@ -172,8 +174,8 @@ const MapContainer = () => {
       onClickMap={addMarker}
       onClickMarker={toggleMarkerInfo}
       onDeleteMarker={deleteMarker}
-      onDragMarker={changeMarkerPosition}
-      onChangeCircleCenter={onChangeCircleCenter}
+      onDragMarker={onDragMarker}
+      onAddMoreMarkerInfo={onAddMoreMarkerInfo}
       onChangeCircleRadius={onChangeCircleRadius}
     />
   );
