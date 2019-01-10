@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "classnames": "^2.2.6",
+    "formik": "^1.4.2",
     "jsondiffpatch": "^0.3.11",
     "lodash-es": "^4.17.11",
     "prop-types": "^15.6.2",
@@ -23,7 +24,8 @@
     "redux": "^4.0.1",
     "redux-actions": "^2.6.4",
     "redux-devtools-extension": "^2.13.7",
-    "redux-saga": "^0.16.2"
+    "redux-saga": "^0.16.2",
+    "yup": "^0.26.7"
   },
   "scripts": {
     "start": "react-app-rewired start",
