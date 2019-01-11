@@ -19,47 +19,48 @@ const MapContainer = () => {
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
   const [markers, setMarkers] = useState([]);
 
-  const positionHandler = useCallback(position => {
-    const {
-      coords: { latitude, longitude },
-    } = position;
-    setCenter({ lat: latitude, lng: longitude });
-  }, []);
-
-  useEffect(() => {
+  const setMapCenterByFirstVisit = useCallback(() => {
     if (user.markers.length > 0) {
       setCenter(user.markers[0].position);
-      setMarkers(user.markers);
     } else if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(positionHandler);
+      navigator.geolocation.getCurrentPosition(
+        ({ coords: { latitude, longitude } }) => {
+          setCenter({ lat: latitude, lng: longitude });
+        },
+      );
     }
+  });
+
+  const setUserMarkersToState = useCallback(() => {
+    if (user.markers.length > 0) {
+      setMarkers(user.markers);
+    }
+  });
+
+  const removeMarkerWithoutTitleByCloseModal = useCallback(() => {
+    if (!modal.isOpen) {
+      const copyMarkers = [...markers];
+      const profiledMarkers = copyMarkers.filter(marker => {
+        return !!marker.title;
+      });
+      console.log(profiledMarkers);
+      if (profiledMarkers.length > 0) {
+        setMarkers(profiledMarkers);
+      }
+    }
+  });
+
+  useEffect(() => {
+    setMapCenterByFirstVisit();
+    setUserMarkersToState();
   }, []);
 
   useEffect(
     () => {
-      if (!modal.isOpen) {
-        const copyMarkers = [...markers];
-        const profiledMarkers = copyMarkers.filter(marker => {
-          return !!marker.title;
-        });
-        if (profiledMarkers.length > 0) {
-          setMarkers(profiledMarkers);
-        }
-      }
+      removeMarkerWithoutTitleByCloseModal();
     },
     [modal.isOpen],
   );
-
-  // useEffect(
-  //   () => {
-  //     const copyMarkers = [...markers];
-  //     if (copyMarkers.length > 0) {
-  //       copyMarkers[copyMarkers.length - 1].title = newMarkerName;
-  //       setMarkers(copyMarkers);
-  //     }
-  //   },
-  //   [newMarkerName],
-  // );
 
   const changePlaces = useCallback(() => {
     const places = searchBoxRef.current.getPlaces();
