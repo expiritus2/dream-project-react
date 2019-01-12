@@ -43,7 +43,7 @@ const MapContainer = () => {
       const profiledMarkers = copyMarkers.filter(marker => {
         return !!marker.title;
       });
-      console.log(profiledMarkers);
+
       if (profiledMarkers.length > 0) {
         setMarkers(profiledMarkers);
       }
@@ -108,7 +108,7 @@ const MapContainer = () => {
       content: (
         <MarkerInfoForm
           autocompleteNames={user.autocompleteNames}
-          setNewMarkerName={name => setMarkerName(newMarker, name)}
+          setNameToMarker={name => setMarkerName(newMarker, name)}
           title=""
         />
       ),
@@ -157,7 +157,7 @@ const MapContainer = () => {
       content: (
         <MarkerInfoForm
           autocompleteNames={user.autocompleteNames}
-          setNewMarkerName={name => setMarkerName(markers[markerIndex], name)}
+          setNameToMarker={name => setMarkerName(markers[markerIndex], name)}
           title={markers[markerIndex].title}
         />
       ),

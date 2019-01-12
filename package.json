@@ -13,6 +13,7 @@
     "react-autocomplete": "^1.8.1",
     "react-datepicker": "^2.0.0",
     "react-dom": "16.7.0-alpha.2",
+    "react-files": "^2.4.8",
     "react-flags-select": "^1.1.10",
     "react-google-maps": "^9.4.5",
     "react-google-maps-api": "^1.0.6",
