@@ -15,12 +15,22 @@ const initialMarkers = [
     title: "Test title",
     position: { lat: 53.8427535, lng: 27.646205899999998 },
     userDate: new Date().getTime(),
+    radius: 1000, // meters
     draggable: true,
     clickable: true,
   },
 ];
 
 const autocompleteName = [
+  { label: "apple" },
+  { label: "banana" },
+  { label: "pear" },
+  { label: "apple" },
+  { label: "banana" },
+  { label: "pear" },
+  { label: "apple" },
+  { label: "banana" },
+  { label: "pear" },
   { label: "apple" },
   { label: "banana" },
   { label: "pear" },
@@ -34,7 +44,7 @@ export function* getUserMarkers() {
   }
 }
 
-export function* getAutocompleteMarkers() {
+export function* getAutocompleteNames() {
   try {
     yield put(autocompleteNamesSuccess(autocompleteName));
   } catch (e) {
@@ -44,5 +54,5 @@ export function* getAutocompleteMarkers() {
 
 export default function*() {
   yield takeEvery(userMarkers, getUserMarkers);
-  yield takeEvery(autocompleteNames, getAutocompleteMarkers);
+  yield takeEvery(autocompleteNames, getAutocompleteNames);
 }

@@ -4,34 +4,63 @@ import { get } from "lodash-es";
 import { compose, withProps } from "recompose";
 import { uniqueId } from "lodash-es";
 import { withScriptjs, withGoogleMap } from "react-google-maps";
+import { openModal } from "components/modal/modules/actions";
+import MarkerInfoForm from "../marker-info-form";
+
 import Map from "./Map";
-import { AutocompleteInput } from "components";
-import { autocompleteNames } from "features/user/modules/actions";
 
 const MapContainer = () => {
   const searchBoxRef = useRef();
   const mapRef = useRef();
+  const circleRef = useRef();
 
-  const [user, actions] = useRedux("user", { autocompleteNames });
+  const [[user, modal], actions] = useRedux(["user", "modal"], { openModal });
 
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
   const [markers, setMarkers] = useState([]);
 
-  const positionHandler = useCallback(position => {
-    const {
-      coords: { latitude, longitude },
-    } = position;
-    setCenter({ lat: latitude, lng: longitude });
-  }, []);
-
-  useEffect(() => {
+  const setMapCenterByFirstVisit = useCallback(() => {
     if (user.markers.length > 0) {
       setCenter(user.markers[0].position);
-      setMarkers(user.markers);
     } else if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(positionHandler);
+      navigator.geolocation.getCurrentPosition(
+        ({ coords: { latitude, longitude } }) => {
+          setCenter({ lat: latitude, lng: longitude });
+        },
+      );
     }
+  });
+
+  const setUserMarkersToState = useCallback(() => {
+    if (user.markers.length > 0) {
+      setMarkers(user.markers);
+    }
+  });
+
+  const removeMarkerWithoutTitleByCloseModal = useCallback(() => {
+    if (!modal.isOpen) {
+      const copyMarkers = [...markers];
+      const profiledMarkers = copyMarkers.filter(marker => {
+        return !!marker.title;
+      });
+
+      if (profiledMarkers.length > 0) {
+        setMarkers(profiledMarkers);
+      }
+    }
+  });
+
+  useEffect(() => {
+    setMapCenterByFirstVisit();
+    setUserMarkersToState();
   }, []);
+
+  useEffect(
+    () => {
+      removeMarkerWithoutTitleByCloseModal();
+    },
+    [modal.isOpen],
+  );
 
   const changePlaces = useCallback(() => {
     const places = searchBoxRef.current.getPlaces();
@@ -53,21 +82,37 @@ const MapContainer = () => {
     });
   }, []);
 
+  const setMarkerName = useCallback((marker, name) => {
+    marker.title = name;
+    setMarkers(prevMarkers => [...prevMarkers]);
+  });
+
   const addMarker = useCallback(event => {
     const {
       latLng: { lat, lng },
     } = event;
     const newMarker = {
       id: uniqueId(),
+      title: "",
       position: { lat: lat(), lng: lng() },
-      titleInput: <AutocompleteInput items={user.autocompleteNames} />,
+      radius: 500,
       draggable: true,
       clickable: true,
       isShowInfo: true,
     };
 
     setMarkers(prevMarkers => [...prevMarkers, newMarker]);
-    actions.autocompleteNames();
+
+    actions.openModal({
+      title: "Add marker info",
+      content: (
+        <MarkerInfoForm
+          autocompleteNames={user.autocompleteNames}
+          setNameToMarker={name => setMarkerName(newMarker, name)}
+          title=""
+        />
+      ),
+    });
   }, []);
 
   const deleteMarker = useCallback(
@@ -90,16 +135,49 @@ const MapContainer = () => {
     [markers],
   );
 
+  const onDragMarker = useCallback((event, markerIndex) => {
+    const copyMarkers = [...markers];
+    copyMarkers[markerIndex].position = {
+      lat: event.latLng.lat(),
+      lng: event.latLng.lng(),
+    };
+    setMarkers(copyMarkers);
+  });
+
+  const onChangeCircleRadius = useCallback(markerIndex => {
+    const radius = circleRef.current.getRadius();
+    const copyMarkers = [...markers];
+    copyMarkers[markerIndex].radius = radius;
+    setMarkers(copyMarkers);
+  });
+
+  const onAddMoreMarkerInfo = useCallback(markerIndex => {
+    actions.openModal({
+      title: "Add info",
+      content: (
+        <MarkerInfoForm
+          autocompleteNames={user.autocompleteNames}
+          setNameToMarker={name => setMarkerName(markers[markerIndex], name)}
+          title={markers[markerIndex].title}
+        />
+      ),
+    });
+  });
+
   return (
     <Map
       mapRef={mapRef}
       searchBoxRef={searchBoxRef}
+      circleRef={circleRef}
       center={center}
       markers={markers}
       onPlacesChanged={changePlaces}
       onClickMap={addMarker}
       onClickMarker={toggleMarkerInfo}
       onDeleteMarker={deleteMarker}
+      onDragMarker={onDragMarker}
+      onAddMoreMarkerInfo={onAddMoreMarkerInfo}
+      onChangeCircleRadius={onChangeCircleRadius}
     />
   );
 };
