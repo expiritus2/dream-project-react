@@ -18,6 +18,8 @@ const MarkerInfoForm = ({
   titleValue,
   dateValue,
   filesAsDataURL,
+  onClickDeletePreviewImage,
+  filesRef,
 }) => {
   return (
     <>
@@ -77,6 +79,7 @@ const MarkerInfoForm = ({
               render={({ form, field }) => (
                 <>
                   <Files
+                    ref={filesRef}
                     className="files-dropzone"
                     onChange={files => onChangeFiles(files, form, field)}
                     onError={e => console.log("filesError", e)}
@@ -89,11 +92,19 @@ const MarkerInfoForm = ({
                   </Files>
                   <div className="preview-files">
                     {filesAsDataURL &&
-                      filesAsDataURL.map(fileURL => (
+                      filesAsDataURL.map((fileURL, index) => (
                         <div
                           key={`file-${uniqueId()}`}
                           className="preview-files__image-wrapper"
                         >
+                          <div
+                            onClick={() =>
+                              onClickDeletePreviewImage(index, form, field)
+                            }
+                            className="preview-files__close"
+                          >
+                            &times;
+                          </div>
                           <img
                             className="preview-files__image"
                             src={fileURL}

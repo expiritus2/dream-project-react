@@ -2,8 +2,10 @@ import React from "react";
 import { object, shape, number, func, array, oneOfType } from "prop-types";
 import { GoogleMap, Marker, InfoWindow, Circle } from "react-google-maps";
 import { SearchBox } from "react-google-maps/lib/components/places/SearchBox";
+import { uniqueId } from "lodash-es";
 
 const Map = ({
+  translate,
   mapRef,
   searchBoxRef,
   circleRef,
@@ -47,13 +49,31 @@ const Map = ({
           >
             {(marker.isShowInfo === undefined || marker.isShowInfo) && (
               <InfoWindow onCloseClick={() => onClickMarker(index)}>
-                <div>
-                  {marker.title && <div>{marker.title}</div>}
+                <div className="marker-info-window">
+                  <div className="marker-info-window__title-wrapper">
+                    {marker.title && <div>{marker.title}</div>}
+                  </div>
+                  <div className="marker-info-window__preview-images-wrapper">
+                    {marker.previewImages &&
+                      marker.previewImages.map((previewImage, index) => (
+                        <div
+                          key={uniqueId()}
+                          className="marker-info-window__image-holder"
+                        >
+                          {index < 2 && <img src={previewImage} alt="" />}
+                          {index === 2 && (
+                            <span className="marker-info-window__image-holder__elipsis">
+                              ...
+                            </span>
+                          )}
+                        </div>
+                      ))}
+                  </div>
                   <button onClick={() => onDeleteMarker(index)} type="button">
-                    Delete
+                    {translate("map.marker.infoWindow.delete")}
                   </button>
                   <button onClick={() => onAddMoreMarkerInfo(index)}>
-                    Add more info
+                    {translate("map.marker.infoWindow.edit")}
                   </button>
                 </div>
               </InfoWindow>
@@ -63,6 +83,12 @@ const Map = ({
             ref={circleRef}
             center={marker.position}
             radius={marker.radius}
+            options={{
+              strokeColor: "#F83A3C",
+              strokeWeight: 1,
+              fillColor: "#F83A3C",
+              fillOpacity: 0.35,
+            }}
             editable={true}
             onRadiusChanged={() => onChangeCircleRadius(index)}
           />
