@@ -1,9 +1,11 @@
 import { handleActions } from "redux-actions";
 import {
-  userMarkersSuccess,
-  userMarkersFailure,
+  getUserMarkersSuccess,
+  getUserMarkersFailure,
   autocompleteNamesSuccess,
   autocompleteNamesFailure,
+  setMarkersAction,
+  setMarkerToList,
 } from "./actions";
 
 const initialState = {
@@ -14,12 +16,12 @@ const initialState = {
 
 const user = handleActions(
   {
-    [userMarkersSuccess]: (state, action) => ({
+    [getUserMarkersSuccess]: (state, action) => ({
       ...state,
       markers: action.payload,
       errors: null,
     }),
-    [userMarkersFailure]: state => ({
+    [getUserMarkersFailure]: state => ({
       ...state,
       errors: {
         markersMessage: "An error occured during loading the markers",
@@ -36,6 +38,14 @@ const user = handleActions(
         autocompleteMessage:
           "An error occured during loading the autocomplete names",
       },
+    }),
+    [setMarkerToList]: (state, action) => ({
+      ...state,
+      markers: [...state.markers, action.payload],
+    }),
+    [setMarkersAction]: (state, action) => ({
+      ...state,
+      markers: action.payload,
     }),
   },
   initialState,

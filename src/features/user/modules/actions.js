@@ -1,10 +1,13 @@
 import { createAction } from "redux-actions";
 
-export const userMarkers = createAction("USER/MARKERS/TRIGGER");
-export const userMarkersSuccess = createAction("USER/MARKERS/SUCCESS");
-export const userMarkersFailure = createAction("USER/MARKERS/FAILURE");
+export const getUserMarkers = createAction("USER/MARKERS");
+export const getUserMarkersSuccess = createAction("USER/MARKERS/SUCCESS");
+export const getUserMarkersFailure = createAction("USER/MARKERS/FAILURE");
 
-export const autocompleteNames = createAction("USER/AUTOCOMPLETE/TRIGGER");
+export const setMarkersAction = createAction("USER/MARKERS/SET");
+export const setMarkerToList = createAction("USER/MARKER/SET");
+
+export const autocompleteNames = createAction("USER/AUTOCOMPLETE");
 export const autocompleteNamesSuccess = createAction(
   "USER/AUTOCOMPLETE/SUCCESS",
 );
