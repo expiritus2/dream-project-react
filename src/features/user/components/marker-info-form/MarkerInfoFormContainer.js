@@ -1,23 +1,33 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef } from "react";
+import { useRedux } from "hooks";
 import MarkerInfoForm from "./MarkerInfoForm";
+import { setMarkersAction } from "features/user/modules/actions";
 
 const MarkerInfoFormContainer = ({
+  markerIndex,
+  isMoreInfo,
   autocompleteNames,
-  setNameToMarker,
+  setTitleToMarker,
+  setFilesAsDataURLToMarker,
+  deletePreviewImageOnMarker,
+  images,
   title,
 }) => {
+  const filesRef = useRef();
+  const [user, actions] = useRedux("user", { setMarkersAction });
+
   const [titleValue, setTitleValue] = useState(title);
   const [dateValue, setDateValue] = useState(new Date());
-  const [filesAsDataURL, setFilesAsDataURL] = useState(null);
+  const [filesAsDataURL, setFilesAsDataURL] = useState(images);
 
-  const setFieldValueToFormik = useCallback((name, form, field) => {
-    form.setFieldValue([field.name], name);
+  const setFieldValueToFormik = useCallback((value, form, field) => {
+    form.setFieldValue([field.name], value);
   });
 
   const onChangeTitle = useCallback((title, form, field) => {
     setFieldValueToFormik(title, form, field);
     setTitleValue(title);
-    setNameToMarker(title);
+    setTitleToMarker(title);
   });
 
   const onChangeDate = useCallback((date, form, field) => {
@@ -26,22 +36,58 @@ const MarkerInfoFormContainer = ({
   });
 
   const onChangeFiles = useCallback((files, form, field) => {
-    setFieldValueToFormik(files, form, field);
-    const binaryFilesList = [];
-    files.forEach((file, index) => {
-      const reader = new FileReader();
+    const copyMarkers = [...user.markers];
 
-      reader.onload = () => {
-        const dataURL = reader.result;
-        binaryFilesList.push(dataURL);
-        if (files.length - 1 === index) {
-          setFilesAsDataURL(binaryFilesList);
-        }
+    if (!isMoreInfo) {
+      copyMarkers[markerIndex].images = files;
+    } else {
+      copyMarkers[markerIndex].images = [
+        ...copyMarkers[markerIndex].images,
+        ...files,
+      ];
+    }
+
+    actions.setMarkersAction(copyMarkers);
+
+    setFieldValueToFormik(filesRef.current.state.files, form, field);
+    const reader = new FileReader();
+    const filesDataURL = [];
+    const readFile = index => {
+      if (index >= copyMarkers[markerIndex].images.length) {
+        setFilesAsDataURL(filesDataURL);
+        setFilesAsDataURLToMarker(filesDataURL);
+        return;
+      }
+      const file = copyMarkers[markerIndex].images[index];
+      reader.onload = e => {
+        const dataURL = e.target.result;
+        filesDataURL.push(dataURL);
+        readFile(index + 1);
       };
-
       reader.readAsDataURL(file);
-    });
+    };
+    readFile(0);
   });
+
+  const onClickDeletePreviewImage = useCallback(
+    (previewImageIndex, form, field) => {
+      const copyFilesAsDataUrl = [...filesAsDataURL];
+
+      copyFilesAsDataUrl.splice(previewImageIndex, 1);
+      filesRef.current.state.files.splice(previewImageIndex, 1);
+
+      console.log(filesRef.current.state.files);
+
+      setFieldValueToFormik(copyFilesAsDataUrl, form, field);
+      setFilesAsDataURL(copyFilesAsDataUrl);
+      deletePreviewImageOnMarker(previewImageIndex);
+
+      const copyMarkers = [...user.markers];
+      copyMarkers[markerIndex].images = filesRef.current.state.files;
+      actions.setMarkersAction(copyMarkers);
+    },
+    [filesRef, filesAsDataURL],
+  );
 
   return (
     <MarkerInfoForm
@@ -53,6 +99,8 @@ const MarkerInfoFormContainer = ({
       titleValue={titleValue}
       dateValue={dateValue}
       filesAsDataURL={filesAsDataURL}
+      onClickDeletePreviewImage={onClickDeletePreviewImage}
+      filesRef={filesRef}
     />
   );
 };

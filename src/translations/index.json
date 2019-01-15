@@ -4,12 +4,28 @@
       "navigation": {
         "personalArea": "Personal Area"
       }
+    },
+    "map": {
+      "marker": {
+        "infoWindow": {
+          "delete": "Delete",
+          "edit": "Edit"
+        }
+      }
     }
   },
   "RU": {
     "header": {
       "navigation": {
         "personalArea": "Личный кабинет"
+      }
+    },
+    "map": {
+      "marker": {
+        "infoWindow": {
+          "delete": "Удалить",
+          "edit": "Редактировать"
+        }
       }
     }
   }

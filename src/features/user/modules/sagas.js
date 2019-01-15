@@ -1,8 +1,8 @@
 import { takeEvery, put } from "redux-saga/effects";
 import {
-  userMarkers,
-  userMarkersSuccess,
-  userMarkersFailure,
+  getUserMarkers,
+  getUserMarkersSuccess,
+  getUserMarkersFailure,
   autocompleteNames,
   autocompleteNamesSuccess,
   autocompleteNamesFailure,
@@ -36,15 +36,15 @@ const autocompleteName = [
   { label: "pear" },
 ];
 
-export function* getUserMarkers() {
+export function* getUserMarkersSaga() {
   try {
-    yield put(userMarkersSuccess(initialMarkers));
+    yield put(getUserMarkersSuccess(initialMarkers));
   } catch (e) {
-    yield put(userMarkersFailure());
+    yield put(getUserMarkersFailure());
   }
 }
 
-export function* getAutocompleteNames() {
+export function* getAutocompleteNamesSaga() {
   try {
     yield put(autocompleteNamesSuccess(autocompleteName));
   } catch (e) {
@@ -53,6 +53,6 @@ export function* getAutocompleteNames() {
 }
 
 export default function*() {
-  yield takeEvery(userMarkers, getUserMarkers);
-  yield takeEvery(autocompleteNames, getAutocompleteNames);
+  yield takeEvery(getUserMarkers, getUserMarkersSaga);
+  yield takeEvery(autocompleteNames, getAutocompleteNamesSaga);
 }
